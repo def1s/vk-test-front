@@ -12,14 +12,15 @@ export const useHttp = () => {
 
 	async function request(
 		url: string,
+		signal: AbortSignal = null,
 		method: Method = 'GET',
 		headers: Record<string, string> = { 'Content-Type': 'application/json' },
-		body: string = null
+		body: string = null,
 	) {
 		setLoading(true);
 
 		try {
-			const response = await fetch(url, { method, headers, body });
+			const response = await fetch(url, { method, headers, body, signal });
 			const data = await response.json();
 
 			if (!response.ok) {
