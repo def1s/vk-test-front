@@ -70,12 +70,13 @@ export const GetAge = ({ className }: GetAgeProps) => {
 	}, [watch('name')]);
 
 	const onHandleSubmit = (formData: FormValues) => {
-		// очищаем ошибку, если она была
-		clearError();
 		// если данные совпадают и нет ошибок, то не отправляем запрос
 		if (data?.name === formData.name && !error) {
 			return;
 		}
+
+		// очищаем ошибку, если она была
+		clearError();
 
 		client.cancelQueries({ queryKey: ['age'] }); // отменяем все запросы, которые были отправлены до этого
 		if (timerRef.current) {
@@ -83,7 +84,7 @@ export const GetAge = ({ className }: GetAgeProps) => {
 		}
 		// подумать над обработкой или достаточно useHttp error?
 		refetch()
-			.catch(error => console.error(error));
+			.catch(error => console.log(error));
 	};
 
 	return (
@@ -97,6 +98,7 @@ export const GetAge = ({ className }: GetAgeProps) => {
 					Узнать возраст
 				</Button>
 				<div>{loading && !error && 'Загрузка...'}</div>
+				<div>{error && 'Произошла ошибка...'}</div>
 			</form>
 		</div>
 	);
