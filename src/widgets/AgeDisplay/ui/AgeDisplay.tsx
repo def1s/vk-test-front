@@ -9,13 +9,14 @@ interface AgeDisplayProps {
 
 export const AgeDisplay = ({ className }: AgeDisplayProps) => {
 	const { data } = useQuery<AgeData>({
-		queryKey: ['age']
+		queryKey: ['age'],
+		enabled: false
 	});
 
 	return (
 		<div className={classNames(cls.AgeDisplay, {}, [className])}>
 			<GetAge/>
-			<div className="">{data ? data.age : null}</div>
+			<div className="">{data && data.age}</div>
 		</div>
 	);
 };

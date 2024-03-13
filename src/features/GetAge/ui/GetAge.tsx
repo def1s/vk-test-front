@@ -31,10 +31,10 @@ export const GetAge = ({ className }: GetAgeProps) => {
 		};
 	}, []);
 
-	const { refetch, data } = useQuery<AgeData>(
+	const { refetch } = useQuery<AgeData>(
 		{
 			queryKey: ['age'],
-			queryFn: ({ signal }) => request(`https://api.agify.io/?name=${name}`, signal),
+			queryFn: ({ signal }) => request(`https://api.agify.io?name=${name}`, signal),
 			enabled: false
 		});
 
