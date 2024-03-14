@@ -5,14 +5,9 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useHttp } from 'shared/hooks/useHttp/useHttp';
 import { Button } from 'shared/ui/Button/Button';
 import { useForm } from 'react-hook-form';
-import { object, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { formValidationSchema } from '../model/formValidationSchema';
 
-const formValidationSchema = object().shape({
-	name: string()
-		.required('Имя не должно быть пустым')
-		.matches(/^[A-Za-z]+$/, 'Имя должно содержать только английские буквы'),
-});
 
 interface FormValues {
 	name: string
@@ -44,6 +39,8 @@ export const GetAge = ({ className }: GetAgeProps) => {
 	const { request, loading, error, clearError } = useHttp();
 
 	const client = useQueryClient();
+
+	// логику можно вынести в model, но в данном случае по большей части будет лишний код, а не декомпозиция
 	const { refetch, data } = useQuery<AgeData>(
 		{
 			queryKey: ['age'],
@@ -53,14 +50,17 @@ export const GetAge = ({ className }: GetAgeProps) => {
 			enabled: false
 		});
 
+	// useEffect отслеживает изменение поля name в форме и каждый раз обновляет таймер на отправку данных
 	useEffect(() => {
 		if (timerRef.current) {
 			clearTimeout(timerRef.current);
 		}
-
-		timerRef.current = setTimeout(() => {
-			handleSubmit(onHandleSubmit)();
-		}, 3000);
+		// на пустое имя ничего не будет навешиваться
+		if (watch('name').length !== 0) {
+			timerRef.current = setTimeout(() => {
+				handleSubmit(onHandleSubmit)();
+			}, 3000);
+		}
 
 		return () => { // очистка, чтобы избежать утечек памяти
 			if (timerRef.current) {
