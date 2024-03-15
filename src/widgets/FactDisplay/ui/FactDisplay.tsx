@@ -3,7 +3,7 @@ import { classNames } from 'shared/lib/classNames/classNames';
 import { FactData, GetFact } from 'features/GetFact';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
-import { Card, Group, Textarea } from '@vkontakte/vkui';
+import { Card, Div, Group, Spacing, Textarea } from '@vkontakte/vkui';
 
 interface FactDisplayProps {
     className?: string
@@ -34,11 +34,14 @@ export const FactDisplay = ({ className }: FactDisplayProps) => {
 
 	return (
 		<Group>
-			<Textarea
-				value={data ? data.fact : ''}
-				getRef={textAreaRef}
-			/>
-			<GetFact/>
+			<Div>
+				<Textarea
+					value={data ? data.fact : ''}
+					getRef={textAreaRef}
+				/>
+				<Spacing size={8}/>
+				<GetFact/>
+			</Div>
 		</Group>
 	);
 };

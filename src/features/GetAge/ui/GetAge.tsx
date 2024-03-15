@@ -8,7 +8,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { formValidationSchema } from '../model/formValidationSchema';
 import { Button, FormItem, FormLayoutGroup, Input } from '@vkontakte/vkui';
 
-
 interface FormValues {
 	name: string
 }
@@ -28,7 +27,6 @@ export const GetAge = ({ className }: GetAgeProps) => {
 	const timerRef = useRef(null);
 
 	const {
-		register,
 		handleSubmit,
 		watch,
 		control,
@@ -93,49 +91,49 @@ export const GetAge = ({ className }: GetAgeProps) => {
 
 	return (
 		<div className={classNames(cls.GetAge, {}, [className])}>
-			<FormLayoutGroup onSubmit={handleSubmit(onHandleSubmit)} mode={'horizontal'}>
-				{/*<Input*/}
-				{/*	{ ...register('name', { required: true }) }*/}
-				{/*/>*/}
-
-				{/*<FormItem top={'Введите имя'} htmlFor={'name'}>*/}
-				{/*	<Input*/}
-				{/*		{ ...register('name', { required: true }) }*/}
-				{/*		id={'name'}*/}
-				{/*		type={'text'}*/}
-				{/*		placeholder={'Имя'}*/}
-				{/*	/>*/}
-				{/*</FormItem>*/}
-
-				{/*<Controller*/}
-				{/*	control={control}*/}
-				{/*	name="name"*/}
-				{/*	rules={{ required: true }}*/}
-				{/*	render={({ field }) =>*/}
-				{/*		<Input*/}
-				{/*			getRef={field.ref}*/}
-				{/*			value={field.value}*/}
-				{/*			onInput={field.onChange}*/}
-				{/*			onBlur={field.onBlur}*/}
-				{/*		/>*/}
-				{/*	}*/}
-				{/*/>*/}
-
-				<FormItem top={'Введите имя'} htmlFor={'name'}>
-					<input
-						{ ...register('name', { required: true }) }
-						placeholder={'Имя'}
+			<form
+				onSubmit={handleSubmit(onHandleSubmit)}
+			>
+				<FormLayoutGroup mode={'horizontal'} style={{ gap: '8px' }}>
+					{/*
+						Controller - это обертка для инпута,
+						позволяющая использовать react-hook-form с компонентами, которые не являются input
+					*/}
+					<Controller
+						control={control}
+						name='name'
+						rules={{ required: true }}
+						render={({ field }) => {
+							return (
+								<FormItem
+									top={'Введите имя'}
+									htmlFor={'name'}
+									status={errors.name ? 'error' : 'default'}
+									bottom={
+										errors.name && errors.name.message
+										|| loading && !error && 'Загрузка...'
+										|| error && !loading && 'Произошла ошибка...'
+									}
+								>
+									<Input
+										getRef={field.ref}
+										value={field.value}
+										onInput={field.onChange}
+										onBlur={field.onBlur}
+									/>
+								</FormItem>
+							);
+						}}
 					/>
-				</FormItem>
-				{errors.name && <div>{errors.name.message}</div>}
-				<Button
-					onClick={handleSubmit(onHandleSubmit)}
-				>
+
+					<Button
+						size={'l'}
+						type={'submit'}
+					>
 					Узнать возраст
-				</Button>
-				<div>{loading && !error && 'Загрузка...'}</div>
-				<div>{error && 'Произошла ошибка...'}</div>
-			</FormLayoutGroup>
+					</Button>
+				</FormLayoutGroup>
+			</form>
 		</div>
 	);
 };
