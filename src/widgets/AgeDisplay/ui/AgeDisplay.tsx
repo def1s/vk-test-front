@@ -2,7 +2,8 @@ import cls from './AgeDisplay.module.scss';
 import { classNames } from 'shared/lib/classNames/classNames';
 import { AgeData, GetAge } from 'features/GetAge';
 import { useQuery } from '@tanstack/react-query';
-import { Div, Group, Text } from '@vkontakte/vkui';
+import { Div, Group } from '@vkontakte/vkui';
+import { getAgeString } from '../lib/getAgeString';
 
 interface AgeDisplayProps {
     className?: string
@@ -17,7 +18,12 @@ export const AgeDisplay = ({ className }: AgeDisplayProps) => {
 	return (
 		<Group className={classNames(cls.AgeDisplay, {}, [className])}>
 			<GetAge/>
-			<Text className="" weight={'2'}>{data && data.age}</Text>
+			{
+				data && data.name &&
+				<Div>
+					{`Возраст ${data.name} составляет ${getAgeString(data.age)}.`}
+				</Div>
+			}
 		</Group>
 	);
 };

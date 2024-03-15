@@ -1,15 +1,10 @@
-import cls from './FactDisplay.module.scss';
-import { classNames } from 'shared/lib/classNames/classNames';
 import { FactData, GetFact } from 'features/GetFact';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
-import { Card, Div, Group, Spacing, Textarea } from '@vkontakte/vkui';
+import { Div, Group, Spacing, Textarea } from '@vkontakte/vkui';
+import { moveCaret } from '../lib/moveCaret';
 
-interface FactDisplayProps {
-    className?: string
-}
-
-export const FactDisplay = ({ className }: FactDisplayProps) => {
+export const FactDisplay = () => {
 	const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
 	const { data } = useQuery<FactData>(
@@ -18,19 +13,10 @@ export const FactDisplay = ({ className }: FactDisplayProps) => {
 			enabled: false // отключаю автоматическое выполнение запроса
 		});
 
+	// при изменении факта будет происходить перемещение каретки после первого слова
 	useEffect(() => {
-		moveCaret();
+		moveCaret(data, textAreaRef);
 	}, [data]);
-
-	const moveCaret = () => {
-		if (data && textAreaRef.current) {
-			const index = data.fact.indexOf(' ');
-			if (index !== -1) {
-				textAreaRef.current.focus();
-				textAreaRef.current.setSelectionRange(index,  index);
-			}
-		}
-	};
 
 	return (
 		<Group>
