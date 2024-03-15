@@ -29,8 +29,18 @@ export const BuildLoaders = ({ isDev }: BuildOptions) => {
 		],
 	};
 
+	// для vkui
+	const cssLoader = {
+		test: /\.css$/i,
+		use: [
+			isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
+			'css-loader',
+		],
+	};
+
 	return [
 		tsLoader,
-		scssLoader
+		scssLoader,
+		cssLoader
 	];
 };

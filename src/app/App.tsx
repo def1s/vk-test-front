@@ -1,12 +1,18 @@
 import React from 'react';
 import './styles/index.scss';
 import { MainPage } from 'pages/MainPage';
+import { AppRoot, Panel, PanelHeader, View } from '@vkontakte/vkui';
 
 const App = () => {
 	return (
-		<div className={'App'}>
-			<MainPage/>
-		</div>
+		<AppRoot>
+			<View activePanel={'main'}>
+				<Panel id={'main'}>
+					<PanelHeader>Приложение</PanelHeader>
+					<MainPage/>
+				</Panel>
+			</View>
+		</AppRoot>
 	);
 };
 
