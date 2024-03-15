@@ -19,10 +19,13 @@ export const AgeDisplay = ({ className }: AgeDisplayProps) => {
 		<Group className={classNames(cls.AgeDisplay, {}, [className])}>
 			<GetAge/>
 			{
-				data && data.name &&
+				data && data.age &&
 				<Div>
 					{`Возраст ${data.name} составляет ${getAgeString(data.age)}.`}
 				</Div>
+			}
+			{
+				data && data.age === null && <Div>Возраст неизвестен</Div>
 			}
 		</Group>
 	);
