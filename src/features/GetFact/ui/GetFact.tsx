@@ -1,8 +1,9 @@
 import cls from './GetFact.module.scss';
 import { classNames } from 'shared/lib/classNames/classNames';
-import { Button } from 'shared/ui/Button/Button';
+// import { Button } from 'shared/ui/Button/Button';
 import { useQuery } from '@tanstack/react-query';
 import { useHttp } from 'shared/hooks/useHttp/useHttp';
+import { Button } from '@vkontakte/vkui';
 
 export interface FactData {
 	fact: string,

@@ -3,6 +3,7 @@ import { classNames } from 'shared/lib/classNames/classNames';
 import { FactData, GetFact } from 'features/GetFact';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
+import { Card, Group, Textarea } from '@vkontakte/vkui';
 
 interface FactDisplayProps {
     className?: string
@@ -32,12 +33,12 @@ export const FactDisplay = ({ className }: FactDisplayProps) => {
 	};
 
 	return (
-		<div className={classNames(cls.FactDisplay, {}, [className])}>
-			<textarea
+		<Group>
+			<Textarea
 				value={data ? data.fact : ''}
-				ref={textAreaRef}
+				getRef={textAreaRef}
 			/>
 			<GetFact/>
-		</div>
+		</Group>
 	);
 };

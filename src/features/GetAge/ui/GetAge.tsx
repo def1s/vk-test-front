@@ -3,10 +3,10 @@ import { classNames } from 'shared/lib/classNames/classNames';
 import React, { useEffect, useRef } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useHttp } from 'shared/hooks/useHttp/useHttp';
-import { Button } from 'shared/ui/Button/Button';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { formValidationSchema } from '../model/formValidationSchema';
+import { Button, FormItem, FormLayoutGroup, Input } from '@vkontakte/vkui';
 
 
 interface FormValues {
@@ -31,9 +31,11 @@ export const GetAge = ({ className }: GetAgeProps) => {
 		register,
 		handleSubmit,
 		watch,
+		control,
 		formState: { errors }
 	} = useForm({
-		resolver: yupResolver(formValidationSchema)
+		resolver: yupResolver(formValidationSchema),
+		defaultValues: { name: '' }
 	});
 
 	const { request, loading, error, clearError } = useHttp();
@@ -55,8 +57,10 @@ export const GetAge = ({ className }: GetAgeProps) => {
 		if (timerRef.current) {
 			clearTimeout(timerRef.current);
 		}
+
+		const name = watch('name');
 		// на пустое имя ничего не будет навешиваться
-		if (watch('name').length !== 0) {
+		if (name.length !== 0) {
 			timerRef.current = setTimeout(() => {
 				handleSubmit(onHandleSubmit)();
 			}, 3000);
@@ -89,17 +93,49 @@ export const GetAge = ({ className }: GetAgeProps) => {
 
 	return (
 		<div className={classNames(cls.GetAge, {}, [className])}>
-			<form className={cls.form} onSubmit={handleSubmit(onHandleSubmit)}>
-				<input
-					{...register('name', { required: true })}
-				/>
+			<FormLayoutGroup onSubmit={handleSubmit(onHandleSubmit)} mode={'horizontal'}>
+				{/*<Input*/}
+				{/*	{ ...register('name', { required: true }) }*/}
+				{/*/>*/}
+
+				{/*<FormItem top={'Введите имя'} htmlFor={'name'}>*/}
+				{/*	<Input*/}
+				{/*		{ ...register('name', { required: true }) }*/}
+				{/*		id={'name'}*/}
+				{/*		type={'text'}*/}
+				{/*		placeholder={'Имя'}*/}
+				{/*	/>*/}
+				{/*</FormItem>*/}
+
+				{/*<Controller*/}
+				{/*	control={control}*/}
+				{/*	name="name"*/}
+				{/*	rules={{ required: true }}*/}
+				{/*	render={({ field }) =>*/}
+				{/*		<Input*/}
+				{/*			getRef={field.ref}*/}
+				{/*			value={field.value}*/}
+				{/*			onInput={field.onChange}*/}
+				{/*			onBlur={field.onBlur}*/}
+				{/*		/>*/}
+				{/*	}*/}
+				{/*/>*/}
+
+				<FormItem top={'Введите имя'} htmlFor={'name'}>
+					<input
+						{ ...register('name', { required: true }) }
+						placeholder={'Имя'}
+					/>
+				</FormItem>
 				{errors.name && <div>{errors.name.message}</div>}
-				<Button>
+				<Button
+					onClick={handleSubmit(onHandleSubmit)}
+				>
 					Узнать возраст
 				</Button>
 				<div>{loading && !error && 'Загрузка...'}</div>
 				<div>{error && 'Произошла ошибка...'}</div>
-			</form>
+			</FormLayoutGroup>
 		</div>
 	);
 };
