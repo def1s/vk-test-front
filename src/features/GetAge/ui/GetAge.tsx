@@ -72,16 +72,27 @@ export const GetAge = () => {
 			return;
 		}
 
-		await client.cancelQueries({ queryKey: ['age'] }); // отменяем все запросы, которые были отправлены до этого
-		// очищаем ошибку, если она была
-		clearError();
+		// отменяем все запросы, которые еще не завершились
+		// cancelQueries всегда завершается без ошибки и переходит в then
+		client.cancelQueries({ queryKey: ['age'] })
+			.then(() => {
+				// очищаем ошибку, если она была
+				clearError();
 
-		if (timerRef.current) {
-			clearTimeout(timerRef.current);
-		}
-		// подумать над обработкой или достаточно useHttp error?
-		refetch()
-			.catch(error => console.log(error));
+				// очищаем таймер, чтобы избежать лишних запросов
+				if (timerRef.current) {
+					clearTimeout(timerRef.current);
+				}
+
+				// отправляем запрос
+				return refetch();
+			})
+			.then((refetchResult) => {
+				// обработка ошибки, если она была
+				if (refetchResult.error) {
+					console.error(refetchResult.error);
+				}
+			});
 	};
 
 	return (

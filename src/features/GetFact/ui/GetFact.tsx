@@ -3,6 +3,7 @@ import { classNames } from 'shared/lib/classNames/classNames';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useHttp } from 'shared/hooks/useHttp/useHttp';
 import { Button } from '@vkontakte/vkui';
+import { useState } from 'react';
 
 export interface FactData {
 	fact: string,
@@ -26,11 +27,21 @@ export const GetFact = ({ className }: GetFactProps) => {
 
 	const onHandleClick = async () => {
 		// отменяю все запросы, которые еще не завершились
-		await client.cancelQueries({ queryKey: ['fact'] });
-		// очищаю ошибки только после того, как отменил все запросы, чтобы статус показывался корректно
-		clearError();
-		await refetch()
-			.catch(error => console.error(error));
+		// cancelQueries всегда выполняется без ошибки
+		client.cancelQueries({ queryKey: ['fact'] })
+			.then(() => {
+				// очищаю ошибку
+				clearError();
+
+				// отправляю запрос
+				return refetch();
+			})
+			.then(refetchResult => {
+				// если запрос завершился с ошибкой
+				if (refetchResult.error) {
+					console.error(refetchResult.error);
+				}
+			});
 	};
 
 	return (
