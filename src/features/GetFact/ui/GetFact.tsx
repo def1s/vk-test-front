@@ -1,7 +1,6 @@
 import cls from './GetFact.module.scss';
 import { classNames } from 'shared/lib/classNames/classNames';
-// import { Button } from 'shared/ui/Button/Button';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useHttp } from 'shared/hooks/useHttp/useHttp';
 import { Button } from '@vkontakte/vkui';
 
@@ -16,15 +15,19 @@ interface GetFactProps {
 
 export const GetFact = ({ className }: GetFactProps) => {
 	const { request, loading, error, clearError } = useHttp();
+	const client = useQueryClient();
 
 	const { refetch } = useQuery<FactData>(
 		{
 			queryKey: ['fact'],
-			queryFn: () => request('https://catfact.ninja/fact'),
+			queryFn: ({ signal }) => request('https://catfact.ninja/fact', signal),
 			enabled: false // отключаю автоматическое выполнение запроса
 		});
 
 	const onHandleClick = async () => {
+		// отменяю все запросы, которые еще не завершились
+		await client.cancelQueries({ queryKey: ['fact'] });
+		// очищаю ошибки только после того, как отменил все запросы, чтобы статус показывался корректно
 		clearError();
 		await refetch()
 			.catch(error => console.error(error));
@@ -34,7 +37,6 @@ export const GetFact = ({ className }: GetFactProps) => {
 		<div className={classNames(cls.GetFact, {}, [className])}>
 			<Button
 				onClick={onHandleClick}
-				disabled={loading}
 			>
 				{!loading && !error && 'Получить факт'}
 				{loading && !error && 'Загрузка...'}
