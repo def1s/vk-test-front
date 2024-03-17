@@ -8,7 +8,9 @@
     "build:prod": "npx webpack build --env mode=production",
     "build:dev": "npx webpack build --env mode=development",
     "linter:check": "eslint \"**/*.{ts,tsx}\"",
-    "linter:fix": "eslint \"**/*.{ts,tsx}\" --fix"
+    "linter:fix": "eslint \"**/*.{ts,tsx}\" --fix",
+    "tunnel": "vk-tunnel --insecure=1 --http-protocol=https --ws-protocol=wss --host=0.0.0.0 --port=3000",
+    "deploy": "npm run build:prod && vk-miniapps-deploy"
   },
   "keywords": [],
   "author": "",
@@ -41,6 +43,8 @@
     "@tanstack/react-query": "^5.25.0",
     "@vkontakte/vk-bridge": "^2.14.1",
     "@vkontakte/vk-bridge-react": "^1.0.1",
+    "@vkontakte/vk-miniapps-deploy": "^0.1.6",
+    "@vkontakte/vk-tunnel": "^0.1.4",
     "@vkontakte/vkui": "^6.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
