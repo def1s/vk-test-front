@@ -1,5 +1,5 @@
-import { FactDisplay } from 'widgets/FactDisplay/ui/FactDisplay';
-import { AgeDisplay } from 'widgets/AgeDisplay/ui/AgeDisplay';
+import { FactDisplay } from 'widgets/FactDisplay';
+import { AgeDisplay } from 'widgets/AgeDisplay';
 import { Div } from '@vkontakte/vkui';
 
 export const MainPage = () => {
