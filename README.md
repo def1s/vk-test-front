@@ -44,8 +44,10 @@ _STACK: React, Typescript, FSD, TanStack Query, React Hook Forms, Yup, webpack, 
 │   │   ├── providers
 │   │   │   ├── QueryProvider
 │   │   │   │   └── ... <- Провайдер для TanStack Query
-│   │   │   └── VKProvider
-│   │   │       └── ... <- Провайдер для работы VKUI, VK Bridge и VK tunnel
+│   │   │   ├── VKProvider
+│   │   │   │   └── ... <- Провайдер для работы VKUI, VK Bridge и VK tunnel
+│   │   │   └── ErrorBoundary
+│   │   │       └── ... <- Обработка критических ошибок
 │   │   └── ...
 │   ├── pages
 │   │   └── MainPage
