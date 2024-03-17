@@ -3,7 +3,6 @@ import { classNames } from 'shared/lib/classNames/classNames';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useHttp } from 'shared/hooks/useHttp/useHttp';
 import { Button } from '@vkontakte/vkui';
-import { useState } from 'react';
 
 export interface FactData {
 	fact: string,
@@ -15,10 +14,10 @@ interface GetFactProps {
 }
 
 export const GetFact = ({ className }: GetFactProps) => {
-	const { request, loading, error, clearError } = useHttp();
+	const { request } = useHttp();
 	const client = useQueryClient();
 
-	const { refetch } = useQuery<FactData>(
+	const { refetch, isFetching, error } = useQuery<FactData>(
 		{
 			queryKey: ['fact'],
 			queryFn: ({ signal }) => request('https://catfact.ninja/fact', signal),
@@ -30,9 +29,6 @@ export const GetFact = ({ className }: GetFactProps) => {
 		// cancelQueries всегда выполняется без ошибки
 		client.cancelQueries({ queryKey: ['fact'] })
 			.then(() => {
-				// очищаю ошибку
-				clearError();
-
 				// отправляю запрос
 				return refetch();
 			})
@@ -49,9 +45,9 @@ export const GetFact = ({ className }: GetFactProps) => {
 			<Button
 				onClick={onHandleClick}
 			>
-				{!loading && !error && 'Получить факт'}
-				{loading && !error && 'Загрузка...'}
-				{!loading && error && 'Произошла ошибка...'}
+				{!isFetching && !error && 'Получить факт'}
+				{isFetching && 'Загрузка...'}
+				{!isFetching && error && `Произошла ошибка: ${error.message}`}
 			</Button>
 		</div>
 	);

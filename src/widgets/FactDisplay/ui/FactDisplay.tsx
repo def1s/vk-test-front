@@ -7,7 +7,7 @@ import { moveCaret } from '../lib/moveCaret';
 export const FactDisplay = () => {
 	const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
-	const { data } = useQuery<FactData>(
+	const { data, error } = useQuery<FactData>(
 		{
 			queryKey: ['fact'],
 			enabled: false // отключаю автоматическое выполнение запроса
@@ -22,10 +22,11 @@ export const FactDisplay = () => {
 		<Group>
 			<Div>
 				<Textarea
+					status={error ? 'error' : 'default'}
 					value={data ? data.fact : ''}
 					getRef={textAreaRef}
 				/>
-				<Spacing size={8}/>
+				<Spacing/>
 				<GetFact/>
 			</Div>
 		</Group>

@@ -31,12 +31,12 @@ export const GetAge = () => {
 		defaultValues: { name: '' }
 	});
 
-	const { request, loading, error, clearError } = useHttp();
+	const { request } = useHttp();
 
 	const client = useQueryClient();
 
 	// логику можно вынести в model, но в данном случае по большей части будет лишний код, а не декомпозиция
-	const { refetch, data } = useQuery<AgeData>(
+	const { refetch, data, error, isFetching } = useQuery<AgeData>(
 		{
 			queryKey: ['age'],
 			queryFn: ({ signal }) => {
@@ -76,19 +76,14 @@ export const GetAge = () => {
 		// cancelQueries всегда завершается без ошибки и переходит в then
 		client.cancelQueries({ queryKey: ['age'] })
 			.then(() => {
-				// очищаем ошибку, если она была
-				clearError();
-
 				// очищаем таймер, чтобы избежать лишних запросов
 				if (timerRef.current) {
 					clearTimeout(timerRef.current);
 				}
-
 				// отправляем запрос
 				return refetch();
 			})
 			.then((refetchResult) => {
-				// обработка ошибки, если она была
 				if (refetchResult.error) {
 					console.error(refetchResult.error);
 				}
@@ -113,11 +108,11 @@ export const GetAge = () => {
 							<FormItem
 								top={'Введите имя'}
 								htmlFor={'name'}
-								status={errors.name ? 'error' : 'default'}
+								status={errors.name || error ? 'error' : 'default'}
 								bottom={
 									errors.name && errors.name.message
-									|| loading && !error && 'Загрузка...'
-									|| error && !loading && 'Произошла ошибка...'
+									|| isFetching && 'Загрузка...'
+									|| error && !isFetching && `Произошла ошибка: ${error.message}`
 								}
 							>
 								<Input

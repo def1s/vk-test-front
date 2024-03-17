@@ -8,7 +8,7 @@ const App = () => {
 		<AppRoot>
 			<View activePanel={'main'}>
 				<Panel id={'main'}>
-					<PanelHeader>VK test task</PanelHeader>
+					<PanelHeader>VK TEST TASK</PanelHeader>
 					<MainPage/>
 				</Panel>
 			</View>
