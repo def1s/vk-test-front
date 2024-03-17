@@ -39,6 +39,8 @@
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
     "@tanstack/react-query": "^5.25.0",
+    "@vkontakte/vk-bridge": "^2.14.1",
+    "@vkontakte/vk-bridge-react": "^1.0.1",
     "@vkontakte/vkui": "^6.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
