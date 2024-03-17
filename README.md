@@ -29,7 +29,7 @@ _STACK: React, Typescript, FSD, TanStack Query, React Hook Forms, Yup, webpack, 
     - Конфигурация проекта декомпозирована на несколько функций в папке `config`
 - Для оформления использована библиотека VKUI
 - Проект залил в виде мини-приложения VK
-  - [прямая ссылка на мини-приложение](https://prod-app51878971-f37b50955e9c.pages-ac.vk-apps.com/index.html)
+  - [прямая ссылка на мини-приложение](https://prod-app51878971-ba129e81207f.pages-ac.vk-apps.com/index.html)
   - [ссылка на мини-приложение в каталоге](https://vk.com/app51878971)
 
 ### Основная структура проекта
